@@ -1,0 +1,9 @@
+{% extends 'base.html' %} {% block title %}Accueil - E-commerce{% endblock %} {% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Bienvenue sur notre boutique</h1>
+    <p class="lead">Découvrez nos produits exceptionnels</p>
+    <hr class="my-4">
+    <p>Les meilleures offres vous attendent</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'product_list' %}" role="button">Voir les produits</a>
+</div>
+{% endblock %}

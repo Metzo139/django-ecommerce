@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Paiement{% endblock %} {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Informations de livraison</h3>
+                    <form method="post">
+                        {% csrf_token %} {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label> {{ field.errors }} {{ field }}
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Commander</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Résumé de la commande</h3>
+                    {% for item in cart.items.all %}
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>{{ item.quantity }}x {{ item.product.name }}</span>
+                        <span>{{ item.get_cost }} €</span>
+                    </div>
+                    {% endfor %}
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <strong>Total</strong>
+                        <strong>{{ cart.get_total_price }} €</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

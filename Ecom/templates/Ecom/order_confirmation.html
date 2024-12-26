@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% block title %}Confirmation de commande{% endblock %} {% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center">Merci pour votre commande!</h2>
+                    <p class="text-center">Votre numéro de commande est: #{{ order.id }}</p>
+
+                    <hr>
+
+                    <h4>Détails de la commande</h4>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Produit</th>
+                                <th>Quantité</th>
+                                <th>Prix unitaire</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order.items.all %}
+                            <tr>
+                                <td>{{ item.product.name }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.price }} €</td>
+                                <td>{{ item.get_cost }} €</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3"><strong>Total</strong></td>
+                                <td><strong>{{ order.total_price }} €</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <hr>
+
+                    <h4>Adresse de livraison</h4>
+                    <p>
+                        {{ order.first_name }} {{ order.last_name }}<br> {{ order.address }}<br> {{ order.postal_code }} {{ order.city }}
+                    </p>
+
+                    <div class="text-center mt-4">
+                        <a href="{% url 'product_list' %}" class="btn btn-primary">Continuer mes achats</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

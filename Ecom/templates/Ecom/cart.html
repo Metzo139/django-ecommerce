@@ -1,0 +1,43 @@
+{% extends 'base.html' %} {% block title %}Mon Panier{% endblock %} {% block content %}
+<h2>Mon Panier</h2>
+{% if cart_items %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Prix unitaire</th>
+            <th>Quantité</th>
+            <th>Total</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in cart_items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.product.price }} €</td>
+            <td>
+                <form method="post" action="{% url 'update_cart' item.product.id %}" class="form-inline">
+                    {% csrf_token %}
+                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control">
+                    <button type="submit" class="btn btn-sm btn-secondary">Mettre à jour</button>
+                </form>
+            </td>
+            <td>{{ item.total_price }} €</td>
+            <td>
+                <a href="{% url 'remove_from_cart' item.product.id %}" class="btn btn-danger btn-sm">Supprimer</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3"><strong>Total</strong></td>
+            <td><strong>{{ cart_total }} €</strong></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
+<a href="{% url 'checkout' %}" class="btn btn-success">Procéder au paiement</a> {% else %}
+<p>Votre panier est vide.</p>
+<a href="{% url 'product_list' %}" class="btn btn-primary">Continuer vos achats</a> {% endif %} {% endblock %}

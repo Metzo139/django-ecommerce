@@ -1,0 +1,43 @@
+{% extends 'base.html' %} {% block title %}Mes commandes{% endblock %} {% block content %}
+<div class="container">
+    <h2 class="mb-4">Historique de mes commandes</h2>
+
+    {% if orders %} {% for order in orders %}
+    <div class="card mb-3">
+        <div class="card-header">
+            Commande #{{ order.id }} - {{ order.created|date:"d/m/Y" }}
+            <span class="badge {% if order.status == 'delivered' %}bg-success{% elif order.status == 'cancelled' %}bg-danger{% else %}bg-info{% endif %} float-end">
+                    {{ order.get_status_display }}
+                </span>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5>Articles</h5>
+                    <ul class="list-unstyled">
+                        {% for item in order.items.all %}
+                        <li>{{ item.quantity }}x {{ item.product.name }} - {{ item.get_cost }} €</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Adresse de livraison</h5>
+                    <p>
+                        {{ order.first_name }} {{ order.last_name }}<br> {{ order.address }}<br> {{ order.postal_code }} {{ order.city }}
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="text-end">
+                <strong>Total: {{ order.total_price }} €</strong>
+            </div>
+        </div>
+    </div>
+    {% endfor %} {% else %}
+    <div class="alert alert-info">
+        Vous n'avez pas encore passé de commande.
+        <a href="{% url 'product_list' %}" class="alert-link">Parcourir les produits</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
